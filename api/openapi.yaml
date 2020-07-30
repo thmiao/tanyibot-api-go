@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
-  description: aibot api
+  description: tanyibot api
   license:
     name: Apache-2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
-  title: AIBot open api
+  title: Tanyi Bot open api
   version: 1.0.0
 servers:
 - url: https://openapi.tanyibot.com/apiOpen/v1
