@@ -1,4 +1,4 @@
-package aibot
+package tanyibot
 
 import(
 	// "crypto/hmac"

@@ -50,7 +50,7 @@ No authorization required
 
 获取isv列表
 
-获取isv列表
+通过此接口获取ISV账号列表
 
 ### Required Parameters
 

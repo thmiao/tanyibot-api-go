@@ -7,6 +7,7 @@ Name | Type | Description | Notes
 **Code** | **int32** | 响应码 | [optional] 
 **RequestId** | **string** | 请求id | [optional] 
 **ResultMsg** | **string** | 响应说明 | [optional] 
+**ErrorStackTrace** | **string** |  | [optional] 
 **TenantName** | **string** |  | [optional] 
 **TenantId** | **string** |  | [optional] 
 

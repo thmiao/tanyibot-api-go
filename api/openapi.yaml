@@ -60,7 +60,7 @@ paths:
       x-codegen-request-body-name: body
   /isv/getIsvList:
     post:
-      description: 获取isv列表
+      description: 通过此接口获取ISV账号列表
       operationId: getIsvList
       responses:
         "200":
@@ -135,8 +135,1736 @@ paths:
       summary: 修改绑定客户线路的价格
       tags:
       - phone
+  /csRobot/staffGroupList:
+    get:
+      description: 通过此接口可以获取用户所有的有效坐席组列表信息
+      operationId: staffGroupList
+      parameters:
+      - in: query
+        name: pageNum
+        required: true
+        schema:
+          format: int32
+          type: integer
+      - in: query
+        name: pageSize
+        required: true
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffGroupListRsp'
+          description: successful operation
+      summary: 获取人工坐席列表接口
+      tags:
+      - csRobot
+  /dialogFlow/getDialogFlowList:
+    get:
+      description: 通过接口可以获取指定公司的所有配置完成的机器人话术
+      operationId: getDialogFlowList
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DialogFlowList'
+          description: successful operation
+      summary: 获取公司的机器人话术列表接口
+      tags:
+      - dialogFlow
+  /dialogFlow/getDialogFlowCallJobRelatedInfo:
+    get:
+      description: 通过接口可以获取指定话术的标识
+      parameters:
+      - in: query
+        name: dialogFlowId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DialogFlowCallJobRelatedInfo'
+          description: successful operation
+      summary: 获取话术中存在人工介入和转人工等标识
+      tags:
+      - dialogFlow
+  /dialogFlow/exportDialogFlowWordDoc:
+    get:
+      description: 通过接口可以获取指定话术的主流程文档
+      operationId: exportDialogFlowWordDoc
+      parameters:
+      - in: query
+        name: dialogFlowId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/inline_response_200'
+          description: successful operation
+      summary: 获取话术主流程word文档
+      tags:
+      - dialogFlow
+  /dialogFlow/getDialogContentInfo:
+    get:
+      description: 通过接口可以获取指定话术所有需要录音的文本和录音文件
+      operationId: getDialogContentInfo
+      parameters:
+      - description: 话术ID
+        in: query
+        name: dialogFlowId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DialogContentInfo'
+          description: successful operation
+      summary: 获取话术中所有需要录音的文本和录音文件
+      tags:
+      - dialogFlow
+  /dialogFlow/batchUpload:
+    post:
+      description: 通过接口可以上传话术中指定文本的录音
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                dialogFlowId:
+                  description: 话术ID
+                  format: int64
+                  type: integer
+                file:
+                  description: 音频文件(MP3或者wav格式)，或者多个录音文件的zip包，录音文件名称为对应录音文本的label
+                  format: binary
+                  type: string
+              required:
+              - dialogFlowId
+              - file
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      summary: 上传话术录音
+      tags:
+      - dialogFlow
+  /dialogFlow/copyDialogFlow:
+    post:
+      description: 通过接口可以复制指定话术
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CopyDialogFlowReq'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CopyDialogFlowRsp'
+          description: successful operation
+      summary: 话术复制
+      tags:
+      - dialogFlow
+      x-codegen-request-body-name: body
+  /dialogFlow/getTotalDialogFlowList:
+    post:
+      description: 通过接口可以获取所有话术列表
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTotalDialogFlowListReq'
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TotalDialogFlowListRsp'
+          description: successful operation
+      summary: 话术列表
+      tags:
+      - dialogFlow
+      x-codegen-request-body-name: body
+  /intentLevelTag/getUsedIntentLevelTagList:
+    get:
+      description: 通过此接口可以获取已使用的所有意向标签组
+      operationId: getUsedIntentLevelTagList
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/GetUsedIntentLevelTagListRsp'
+          description: successful operation
+      summary: 获取已使用的意向标签组列表接口
+      tags:
+      - intentLevelTag
+  /intentLevelTag/getIntentLevelTag:
+    get:
+      description: 通过接口可以获取指定意向标签分组的内容
+      parameters:
+      - description: 标签分组Id
+        in: query
+        name: intentLevelTagId
+        required: true
+        schema:
+          default: 0
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIntentLevelTagRsp'
+          description: successful operation
+      summary: 获取意向标签内容
+      tags:
+      - intentLevelTag
+  /callIntercept/list:
+    get:
+      description: 通过此接口可以获取所有拦截组
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterceptListRsp'
+          description: successful operation
+      summary: 获取拦截组列表接口
+      tags:
+      - callIntercept
+  /policyGroup/getIdAndNamePairList:
+    get:
+      description: 通过此接口可以获取外呼策略组id和名称对应的键值对列表
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetIdAndNamePairListRsp'
+          description: successful operation
+      summary: 获取外呼策略组选择接口
+      tags:
+      - policyGroup
+  /policyGroup/list:
+    get:
+      description: 通过此接口可以获取用户所有的外呼策略组信息
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPolicyGroupListRsp'
+          description: successful operation
+      summary: 获取外呼策略组列表接口
+      tags:
+      - policyGroup
+  /policyGroup/create:
+    post:
+      description: 创建新的外呼策略组
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/CreatePolicyGroupReq'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      summary: 创建外呼策略组接口
+      tags:
+      - policyGroup
+      x-codegen-request-body-name: body
+  /policyGroup/update:
+    post:
+      description: 更新新的外呼策略组
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/UpdatePolicyGroupReq'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      summary: 更新外呼策略组接口
+      tags:
+      - policyGroup
+      x-codegen-request-body-name: body
+  /job/create:
+    post:
+      description: 创建任务,支持使用多个无主叫固话,只需设置总并发数,由系统自动分配每个线路的并发。
+      operationId: create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JobCreateRsp'
+          description: successful operation
+      summary: 通过此接口可以创建新的任务
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/start:
+    post:
+      operationId: start
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object'
+        content:
+          application/json:
+            schema:
+              properties:
+                robotCallJobId:
+                  description: 任务Id
+                  example: 1
+                  format: int64
+                  type: integer
+              required:
+              - robotCallJobId
+              type: object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/pause:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_1'
+        content:
+          application/json:
+            schema:
+              properties:
+                robotCallJobId:
+                  description: 任务Id
+                  format: int64
+                  type: integer
+              type: object
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/delete:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_2'
+        content:
+          application/json:
+            schema:
+              properties:
+                robotCallJobId:
+                  description: 删除任务
+                  format: int64
+                  type: integer
+              type: object
+        required: false
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/importCustomer:
+    post:
+      operationId: importCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ImportCustomerReq'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/updateAiCount:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_3'
+        content:
+          application/json:
+            schema:
+              properties:
+                robotCallJobId:
+                  description: 任务Id
+                  format: int64
+                  type: integer
+                robotCount:
+                  description: 坐席数量
+                  format: int32
+                  type: integer
+              type: object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/checkAll:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_4'
+        content:
+          application/json:
+            schema:
+              properties:
+                operation:
+                  description: 操作类型，必填 PAUSE:暂停 START:开始
+                  enum:
+                  - PAUSE
+                  - START
+                  type: string
+                robotCallJobIdSet:
+                  description: 任务id集合
+                  items:
+                    type: string
+                  type: array
+                statusSet:
+                  description: 任务状态，NOT_STARTED(0, "未开始"),IN_PROCESS(1, "进行中")，COMPLETED(2,
+                    "已完成"),RUNNABLE(3, "可运行"),USER_PAUSE(4, "用户暂停"),SYSTEM_SUSPENDED(5,
+                    "系统暂停")，TERMINATE(6, "已终止"),IN_QUEUE(7, "排队中"),SYSTEM_HANG_UP(10,
+                    "系统挂起"),WAITING_FOR_REDIAL(11, "等待重呼"),ACCOUNT_DISABLE(12, "账户禁用"),MAINTAIN(13,
+                    "系统维护");
+                  enum:
+                  - NOT_STARTED
+                  - IN_PROCESS
+                  - COMPLETED
+                  - RUNNABLE
+                  - USER_PAUSE
+                  - SYSTEM_SUSPENDED
+                  - TERMINATE
+                  - IN_QUEUE
+                  - SYSTEM_HANG_UP
+                  - WAITING_FOR_REDIAL
+                  - ACCOUNT_DISABLE
+                  - MAINTAIN
+                  type: string
+                name:
+                  description: 任务名称
+                  type: string
+                beginCreateDate:
+                  description: 开始任务创建日期
+                  type: string
+                endCreateDate:
+                  description: 结束任务创建日期
+                  type: string
+              required:
+              - operation
+              type: object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckAllRsp'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/executeJobs:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExecuteJobsReq'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExecuteJobsRsp'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/modify:
+    patch:
+      description: 通过此接口可以修改任务
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Job'
+        required: false
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/JobUpdateRsp'
+          description: successful operation
+      summary: 修改任务接口
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/reAddCustomerToJob:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReAddCustomerToJobReq'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APIResponse'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/getJobStatsInfoList:
+    post:
+      requestBody:
+        $ref: '#/components/requestBodies/inline_object_5'
+        content:
+          application/json:
+            schema:
+              properties:
+                robotCallJobId:
+                  items:
+                    type: string
+                  type: array
+              type: object
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobStatsInfoListRsp'
+          description: successful operation
+      tags:
+      - job
+      x-codegen-request-body-name: body
+  /job/getJobs:
+    get:
+      description: 通过此接口可以获取指定公司的任务列表
+      parameters:
+      - description: 任务名称
+        in: query
+        name: name
+        schema:
+          type: string
+      - description: 任务状态,(NOT_STARTED, "未开始"),(IN_PROCESS, "进行中"),(COMPLETED, "已完成"),(RUNNABLE,
+          "可运行"),(USER_PAUSE, "用户暂停"),(SYSTEM_SUSPENDED, "系统暂停"),(TERMINATE, "已终止"),(IN_QUEUE,
+          "排队中"),(SYSTEM_HANG_UP,"系统挂起"),(WAITING_FOR_REDIAL,"等待重呼"),(ACCOUNT_DISABLE,"账户禁用"),(MAINTAIN,"系统维护");
+        in: query
+        name: status
+        schema:
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETED
+          - RUNNABLE
+          - USER_PAUSE
+          - SYSTEM_SUSPENDED
+          - TERMINATE
+          - IN_QUEUE
+          - SYSTEM_HANG_UP
+          - WAITING_FOR_REDIAL
+          - ACCOUNT_DISABLE
+          - MAINTAIN
+          type: string
+      - description: 第几页,默认1
+        in: query
+        name: pageNum
+        schema:
+          format: int32
+          type: integer
+      - description: 页面大小,选填,默认20,最大值100
+        in: query
+        name: pageSize
+        schema:
+          format: int32
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobsRsp'
+          description: successful operation
+      summary: 获取任务列表接口
+      tags:
+      - job
+  /job/getJobDetail:
+    get:
+      parameters:
+      - description: 任务Id
+        in: query
+        name: robotCallJobId
+        required: true
+        schema:
+          format: int64
+          type: integer
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetJobDetailRsp'
+          description: successful operation
+      tags:
+      - job
 components:
+  requestBodies:
+    inline_object_1:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_1'
+      required: false
+    inline_object:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object'
+      required: true
+    inline_object_5:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_5'
+      required: true
+    inline_object_4:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_4'
+      required: true
+    inline_object_3:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_3'
+      required: true
+    inline_object_2:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/inline_object_2'
+      required: false
   schemas:
+    GetJobDetailRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetJobDetailRsp_allOf'
+    GetJobsRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetJobsRsp_allOf'
+    JobsPage:
+      properties:
+        number:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalElements:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+        content:
+          items:
+            $ref: '#/components/schemas/JobsPage_content'
+          type: array
+      type: object
+    GetJobStatsInfoListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetJobStatsInfoListRsp_allOf'
+    ReAddCustomerToJobReq:
+      example:
+        customerGroupId: 1
+        robotCallJobId: 0
+        followStatus: CLUE
+        calledPhoneNumber: calledPhoneNumber
+        callRecordId: 1542
+        resultStatuses:
+        - resultStatuses
+        - resultStatuses
+        lastCallRecord: true
+        dialogFlowId: 1
+        latestCreationTime: 2018-07-30
+        intentLevels:
+        - intentLevels
+        - intentLevels
+        customerPersonName: 张三
+        customerPersonIds:
+        - 6
+        - 6
+        earliestCreationTime: 2018-07-25
+      properties:
+        robotCallJobId:
+          format: int64
+          type: integer
+        customerPersonIds:
+          items:
+            format: int64
+            type: integer
+          type: array
+        lastCallRecord:
+          description: 是否过滤重复通话记录只显示最近的一条
+          example: true
+          type: boolean
+        calledPhoneNumber:
+          description: 被叫号码
+          type: string
+        callRecordId:
+          description: 通话记录id
+          example: 1542
+          format: int64
+          type: integer
+        customerPersonName:
+          description: 客户姓名
+          example: 张三
+          type: string
+        customerGroupId:
+          description: 分组id
+          format: int64
+          type: integer
+        resultStatuses:
+          description: "ANSWERED(0, \"已接听\", null), NO_ANSWER(1, \"无应答\", \"呼叫号码未接\
+            听\"), BUSY(2, \"忙线中\", \"呼叫号码占线\"), POWER_OFF(3, \"关机\", \"呼叫号码关机\"),\
+            \ OUT_OF_SERVICE(4, \"停机\", \"呼叫号码停机\"), REFUSED(5, \"拒接\", \"呼叫号码拒接\"\
+            ), VACANT_NUMBER(6, \"空号\", \"呼叫的号码是空号\"), CAN_NOT_CONNECT(7, \"无法接通\"\
+            , \"呼叫的号码无法接通\"), FROM_PHONE_ERROR(8, \"主叫停机\", \"主叫号码不可用\"), SYSTEM_ERROR(9,\
+            \ \"系统错误\", \"外呼失败，系统错误\"), CALL_LOSS(10,\"多并发呼损\",\"等待服务中用户挂断\"), TRANSFER_ARTIFICIAL(11,\"\
+            转人工呼损\",\"等待转人工服务中用户挂断\");\t[\"ANSWERED\","
+          items:
+            type: string
+          type: array
+        intentLevels:
+          items:
+            type: string
+          type: array
+        followStatus:
+          description: 跟进状态CLUE(0, "线索"), AI_INITIAL_VISIT(1, "AI初访"), PEOPLE_INITIAL_VISIT(2,
+            "人工初访"), AI_FOLLOW_UP(3, "AI持续跟进"), PEOPLE_FOLLOW_UP(4, "人工持续跟进"), QUOTE(5,
+            "报价"), DEAL(6, "成交"), LOSS(7, "流失");
+          enum:
+          - CLUE
+          - AI_INITIAL_VISIT
+          - PEOPLE_INITIAL_VISIT
+          - AI_FOLLOW_UP
+          - PEOPLE_FOLLOW_UP
+          - QUOTE
+          - DEAL
+          - LOSS
+          type: string
+        dialogFlowId:
+          description: 话术ID
+          example: 1
+          format: int64
+          type: integer
+        earliestCreationTime:
+          description: 最早创建时间，日期标准格式，请不要包含时间。可以为空
+          example: 2018-07-25
+          type: string
+        latestCreationTime:
+          description: 最晚创建时间，日期标准格式，请不要包含时间。可以为空
+          example: 2018-07-30
+          type: string
+      required:
+      - customerPersonIds
+      - robotCallJobId
+      type: object
+    ExecuteJobsRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/ExecuteJobsRsp_allOf'
+    ExecuteJobsReq:
+      example:
+        operation: operation
+        executable:
+        - statsInfo:
+            robotCallJobId: 6
+            answeredTask: 5
+            ablevelCustomer: 2
+            completedTask: 1
+            totalTask: 5
+          hangUpType: ACCOUNT_DEBT
+          robotCallJobId: 0
+          hangUpReason: hangUpReason
+          createTime: createTime
+          createUserName: createUserName
+          robotCallJobName: robotCallJobName
+          status: NOT_STARTED
+        - statsInfo:
+            robotCallJobId: 6
+            answeredTask: 5
+            ablevelCustomer: 2
+            completedTask: 1
+            totalTask: 5
+          hangUpType: ACCOUNT_DEBT
+          robotCallJobId: 0
+          hangUpReason: hangUpReason
+          createTime: createTime
+          createUserName: createUserName
+          robotCallJobName: robotCallJobName
+          status: NOT_STARTED
+      properties:
+        operation:
+          type: string
+        executable:
+          description: 操作任务
+          items:
+            $ref: '#/components/schemas/ExecuteJobInfo'
+          type: array
+      type: object
+    ExecuteJobInfo:
+      example:
+        statsInfo:
+          robotCallJobId: 6
+          answeredTask: 5
+          ablevelCustomer: 2
+          completedTask: 1
+          totalTask: 5
+        hangUpType: ACCOUNT_DEBT
+        robotCallJobId: 0
+        hangUpReason: hangUpReason
+        createTime: createTime
+        createUserName: createUserName
+        robotCallJobName: robotCallJobName
+        status: NOT_STARTED
+      properties:
+        robotCallJobId:
+          description: 任务id
+          format: int64
+          type: integer
+        robotCallJobName:
+          description: 任务名
+          type: string
+        createTime:
+          description: 创建时间
+          type: string
+        createUserName:
+          description: 任务创建人
+          type: string
+        status:
+          description: 任务状态，NOT_STARTED(0, "未开始"),IN_PROCESS(1, "进行中")，COMPLETED(2,
+            "已完成"),RUNNABLE(3, "可运行"),USER_PAUSE(4, "用户暂停"),SYSTEM_SUSPENDED(5, "系统暂停")，TERMINATE(6,
+            "已终止"),IN_QUEUE(7, "排队中"),SYSTEM_HANG_UP(10, "系统挂起"),WAITING_FOR_REDIAL(11,
+            "等待重呼"),ACCOUNT_DISABLE(12, "账户禁用"),MAINTAIN(13, "系统维护");
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETED
+          - RUNNABLE
+          - USER_PAUSE
+          - SYSTEM_SUSPENDED
+          - TERMINATE
+          - IN_QUEUE
+          - SYSTEM_HANG_UP
+          - WAITING_FOR_REDIAL
+          - ACCOUNT_DISABLE
+          - MAINTAIN
+          type: string
+        hangUpType:
+          description: 系统挂起类型 ACCOUNT_DEBT(0, "账户欠费", "使用的线路账户已欠费"),NO_ROBOT_AVAILABLE(1,
+            "没有可用坐席", "当前没有可用坐席"),PHONE_UNBIND(2, "线路已解绑", "使用的线路已解绑"),LINE_BREAKDOWN(3,
+            "线路故障", "使用的线路状态均为故障"),AVAILABLE_ROBOT_NOT_ENOUGH(4,"有效坐席数不足","有效坐席数不足，请检查有效AI坐席数量！");
+          enum:
+          - ACCOUNT_DEBT
+          - NO_ROBOT_AVAILABLE
+          - PHONE_UNBIND
+          - LINE_BREAKDOWN
+          - AVAILABLE_ROBOT_NOT_ENOUGH
+          type: string
+        hangUpReason:
+          description: 系统挂起原因
+          type: string
+        statsInfo:
+          $ref: '#/components/schemas/StatsInfo'
+      type: object
+    StatsInfo:
+      example:
+        robotCallJobId: 6
+        answeredTask: 5
+        ablevelCustomer: 2
+        completedTask: 1
+        totalTask: 5
+      properties:
+        robotCallJobId:
+          format: int64
+          type: integer
+        completedTask:
+          description: 已完成的任务总量
+          format: int64
+          type: integer
+        totalTask:
+          description: 任务总数
+          format: int64
+          type: integer
+        answeredTask:
+          description: 接通电话总量
+          format: int64
+          type: integer
+        ablevelCustomer:
+          description: AB类客户数量
+          format: int64
+          type: integer
+      type: object
+    CheckAllRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/CheckAllRsp_allOf'
+    ImportCustomerReq:
+      example:
+        robotCallJobId: 1
+        callRecordDup: false
+        customerPersons:
+        - phoneNumber: phoneNumber
+          gender: MALE
+          name: 张三
+          properties: '{}'
+        - phoneNumber: phoneNumber
+          gender: MALE
+          name: 张三
+          properties: '{}'
+      properties:
+        robotCallJobId:
+          description: 任务Id
+          example: 1
+          format: int64
+          type: integer
+        callRecordDup:
+          default: false
+          description: 是否已呼列表去重 默认false
+          example: false
+          type: boolean
+        customerPersons:
+          items:
+            $ref: '#/components/schemas/CustomerPerson'
+          type: array
+      required:
+      - robotCallJobId
+      type: object
+    CustomerPerson:
+      example:
+        phoneNumber: phoneNumber
+        gender: MALE
+        name: 张三
+        properties: '{}'
+      properties:
+        name:
+          description: 客户名称
+          example: 张三
+          type: string
+        gender:
+          description: 性别
+          enum:
+          - MALE
+          - FEMALE
+          type: string
+        phoneNumber:
+          description: 客户电话
+          type: string
+        properties:
+          description: 话术中自定义的语句内容
+          properties: {}
+          type: object
+      type: object
+    JobUpdateRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/JobUpdateRsp_allOf'
+    JobCreateRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/JobUpdateRsp_allOf'
+    Job:
+      description: Job
+      example:
+        concurrencyQuota: 0
+        jobPhoneNumberIdList:
+        - 6
+        - 6
+        robotCallJob:
+          phoneType: MOBILE
+          robotCallJobId: 5
+          redialTimes: 1
+          isPrior: true
+          dailyStartTime: dailyStartTime
+          earlyWarningAlertUsers:
+          - earlyWarningAlertUsers
+          - earlyWarningAlertUsers
+          description: description
+          smsTemplateId: 2
+          dailyEndTime: dailyEndTime
+          wechatPushConditionList:
+          - intentLevelCodes:
+            - 3
+            - 3
+            wechatSendMethod: SENDTOALL
+            transferCustomer: true
+            userIds:
+            - 4
+            - 4
+            durationThreshold: 2
+          - intentLevelCodes:
+            - 3
+            - 3
+            wechatSendMethod: SENDTOALL
+            transferCustomer: true
+            userIds:
+            - 4
+            - 4
+            durationThreshold: 2
+          inactiveTimeList:
+          - startTime: startTime
+            endTime: endTime
+          - startTime: startTime
+            endTime: endTime
+          smsAlertLevel:
+          - smsAlertLevel
+          - smsAlertLevel
+          mode: AUTO
+          dialogFlowId: 1
+          smsAlertLevelCode:
+          - 9
+          - 9
+          tenantCallInterceptId: 1
+          name: name
+          robotCount: 5
+          tenantId: 7
+          redialCondition:
+          - CALL_LOSS
+          - CALL_LOSS
+          startTime: startTime
+          redialInterval: 7
+        transferPhoneNumber:
+        - transferPhoneNumber
+        - transferPhoneNumber
+      properties:
+        concurrencyQuota:
+          description: 并发数 开启一线多并发时可比robotCount大，不开启一线多并发是与robotCount相同（线路类型为手机号的时候可不传）
+          format: int32
+          type: integer
+        jobPhoneNumberIdList:
+          description: 通过获取外呼线路接口获取 tenant_phone_number_id,当类型是手机号的时候他的size代表机器人的个数，当类型非手机号的时候他的size只能是1；如果外呼方式选择的是外呼策略组，则里面内容为外呼策略组的id（size只能为1）
+          items:
+            format: int64
+            type: integer
+          type: array
+        transferPhoneNumber:
+          description: 转人工号码,触发转人工时轮训号码列表
+          items:
+            type: string
+          type: array
+        robotCallJob:
+          $ref: '#/components/schemas/RobotCallJob'
+      type: object
+    RobotCallJob:
+      example:
+        phoneType: MOBILE
+        robotCallJobId: 5
+        redialTimes: 1
+        isPrior: true
+        dailyStartTime: dailyStartTime
+        earlyWarningAlertUsers:
+        - earlyWarningAlertUsers
+        - earlyWarningAlertUsers
+        description: description
+        smsTemplateId: 2
+        dailyEndTime: dailyEndTime
+        wechatPushConditionList:
+        - intentLevelCodes:
+          - 3
+          - 3
+          wechatSendMethod: SENDTOALL
+          transferCustomer: true
+          userIds:
+          - 4
+          - 4
+          durationThreshold: 2
+        - intentLevelCodes:
+          - 3
+          - 3
+          wechatSendMethod: SENDTOALL
+          transferCustomer: true
+          userIds:
+          - 4
+          - 4
+          durationThreshold: 2
+        inactiveTimeList:
+        - startTime: startTime
+          endTime: endTime
+        - startTime: startTime
+          endTime: endTime
+        smsAlertLevel:
+        - smsAlertLevel
+        - smsAlertLevel
+        mode: AUTO
+        dialogFlowId: 1
+        smsAlertLevelCode:
+        - 9
+        - 9
+        tenantCallInterceptId: 1
+        name: name
+        robotCount: 5
+        tenantId: 7
+        redialCondition:
+        - CALL_LOSS
+        - CALL_LOSS
+        startTime: startTime
+        redialInterval: 7
+      properties:
+        dialogFlowId:
+          format: int32
+          type: integer
+        isPrior:
+          type: boolean
+        robotCallJobId:
+          description: 任务id
+          format: int64
+          type: integer
+        dailyEndTime:
+          type: string
+        dailyStartTime:
+          type: string
+        description:
+          type: string
+        earlyWarningAlertUsers:
+          items:
+            type: string
+          type: array
+        inactiveTimeList:
+          items:
+            $ref: '#/components/schemas/RobotCallJob_inactiveTimeList'
+          type: array
+        name:
+          description: 任务名称
+          type: string
+        mode:
+          description: 任务类型 (AUTO, "自动任务"),(MANUAL, "手动任务");
+          enum:
+          - AUTO
+          - MANUAL
+          type: string
+        phoneType:
+          description: 号码类型 (MOBILE, "手机号码"),(LANDLINE, "固话"),(UNFIXED_CALL, "无主叫"),
+            (CALL_POLICY_GROUP, "外呼策略组")
+          enum:
+          - MOBILE
+          - LANDLINE
+          - UNFIXED_CALL
+          - CALL_POLICY_GROUP
+          type: string
+        robotCount:
+          format: int32
+          type: integer
+        smsAlertLevel:
+          items:
+            type: string
+          type: array
+        smsTemplateId:
+          format: int32
+          type: integer
+        startTime:
+          type: string
+        tenantId:
+          format: int64
+          type: integer
+        smsAlertLevelCode:
+          items:
+            format: int32
+            type: integer
+          type: array
+        wechatPushConditionList:
+          description: 微信推送条件
+          items:
+            $ref: '#/components/schemas/WechatPushCondition'
+          type: array
+        redialCondition:
+          description: 重拨条件(CALL_LOSS,"呼损客户"),(NO_ANSWER,"无应答"),(BUSY,"忙线中"),(REFUSED,"拒接"),(POWER_OFF,"关机"),(OUT_OF_SERVICE,"停机"),(CAN_NOT_CONNECT,“无法接通“),(FROM_PHONE_ERROR,"主叫欠费"),(SYSTEM_ERROR,"外呼失败")
+          items:
+            enum:
+            - CALL_LOSS
+            - NO_ANSWER
+            - BUSY
+            - REFUSED
+            - POWER_OFF
+            - OUT_OF_SERVICE
+            type: string
+          type: array
+        redialInterval:
+          description: 重拨间隔(分钟，取值范围6分钟~24 x 60分钟)
+          format: int32
+          type: integer
+        redialTimes:
+          description: 重拨次数(取值范围1~10）
+          format: int32
+          type: integer
+        tenantCallInterceptId:
+          description: 拦截组id
+          format: int64
+          type: integer
+      type: object
+    WechatPushCondition:
+      example:
+        intentLevelCodes:
+        - 3
+        - 3
+        wechatSendMethod: SENDTOALL
+        transferCustomer: true
+        userIds:
+        - 4
+        - 4
+        durationThreshold: 2
+      properties:
+        intentLevelCodes:
+          description: 意向等级
+          items:
+            format: int32
+            type: integer
+          type: array
+        durationThreshold:
+          description: 通话时长
+          format: int32
+          type: integer
+        userIds:
+          description: 微信推送人
+          items:
+            format: int64
+            type: integer
+          type: array
+        wechatSendMethod:
+          description: 微信推送方式（SENDTOALL，全推送），（SENDTOONE，单推送），（SENDTONONE 不推送）
+          enum:
+          - SENDTOALL
+          - SENDTOONE
+          - SENDTONONE
+          type: string
+        transferCustomer:
+          description: 分配客户给微信推送人
+          type: boolean
+      type: object
+    UpdatePolicyGroupReq:
+      example:
+        dispatchType: SORT_FIRST
+        tenantPhoneNumberId: 6
+        name: name
+        remark: remark
+        callPolicyGroupId: 0
+      properties:
+        callPolicyGroupId:
+          description: 外呼策略组ID
+          format: int64
+          type: integer
+        name:
+          description: 外呼策略组名称
+          type: string
+        remark:
+          description: 备注
+          type: string
+        dispatchType:
+          description: 优先级策略，(SORT_FIRST, "排序优先级优先"),(LOCATION_MATCH_FIRST, "归属地匹配优先");
+          enum:
+          - SORT_FIRST
+          - LOCATION_MATCH_FIRST
+          type: string
+        tenantPhoneNumberId:
+          description: 用户线路ID
+          format: int64
+          type: integer
+      required:
+      - tenantPhoneNumberId
+      type: object
+    CreatePolicyGroupReq:
+      example:
+        dispatchType: SORT_FIRST
+        tenantPhoneNumberId: 0
+        name: name
+        remark: remark
+      properties:
+        name:
+          description: 外呼策略组名称
+          type: string
+        remark:
+          description: 备注
+          type: string
+        dispatchType:
+          description: 优先级策略，(SORT_FIRST, "排序优先级优先"),(LOCATION_MATCH_FIRST, "归属地匹配优先");
+          enum:
+          - SORT_FIRST
+          - LOCATION_MATCH_FIRST
+          type: string
+        tenantPhoneNumberId:
+          description: 用户线路ID
+          format: int64
+          type: integer
+      required:
+      - dispatchType
+      - name
+      - tenantPhoneNumberId
+      type: object
+    GetPolicyGroupListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetPolicyGroupListRsp_allOf'
+    PolicyGroup:
+      properties:
+        createUserId:
+          format: int32
+          type: integer
+        updateUserId:
+          format: int32
+          type: integer
+        createTime:
+          type: string
+        updateTime:
+          type: string
+        callPolicyGroupId:
+          description: 外呼策略组ID
+          format: int32
+          type: integer
+        tenantId:
+          description: 公司ID
+          format: int64
+          type: integer
+        name:
+          type: string
+        remark:
+          description: 备注
+          type: string
+        phoneType:
+          description: 外呼策略组类型
+          type: string
+        dispatchType:
+          description: 优先级策略，(SORT_FIRST, "排序优先级优先"),(LOCATION_MATCH_FIRST, "归属地匹配优先")
+          enum:
+          - SORT_FIRST
+          - LOCATION_MATCH_FIRST
+          type: string
+        detailList:
+          items:
+            $ref: '#/components/schemas/CallPolicyGroupDetail'
+          type: array
+      type: object
+    CallPolicyGroupDetail:
+      properties:
+        createUserId:
+          format: int32
+          type: integer
+        updateUserId:
+          format: int32
+          type: integer
+        createTime:
+          type: string
+        updateTime:
+          type: string
+        callPolicyGroupDetailId:
+          format: int32
+          type: integer
+        callPolicyGroupId:
+          format: int32
+          type: integer
+        tenantId:
+          format: int64
+          type: integer
+        phoneNumberId:
+          format: int32
+          type: integer
+        tenantPhoneNumberId:
+          format: int32
+          type: integer
+        sort:
+          format: int32
+          type: integer
+        phoneNumberInfo:
+          items:
+            $ref: '#/components/schemas/Phone'
+          type: array
+        lineStatus:
+          $ref: '#/components/schemas/LineStatus'
+      type: object
+    LineStatus:
+      properties:
+        status:
+          type: string
+        isLineAvailable:
+          type: boolean
+        hint:
+          type: string
+        occupiedJobList:
+          type: string
+      type: object
+    GetIdAndNamePairListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetIdAndNamePairListRsp_allOf'
+    PolicyGroupIdAndNamePair:
+      properties:
+        callPolicyGroupId:
+          description: 外呼策略组id
+          type: string
+        tenantId:
+          description: 公司Id
+          format: int64
+          type: integer
+        name:
+          description: 外呼策略组名称
+          type: string
+      type: object
+    InterceptListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/InterceptListRsp_allOf'
+    CallIntercept:
+      properties:
+        tenantCallInterceptId:
+          description: 拦截组Id
+          format: int64
+          type: integer
+        name:
+          description: 拦截组名称
+          type: string
+        callOutRestrict:
+          description: 是否开启外呼上限设置(YES 开启 NO 不开启)
+          type: string
+        callOutCount:
+          description: 外呼次数上限限制
+          format: int32
+          type: integer
+        callOutDays:
+          description: 外呼次数天数内限制
+          format: int32
+          type: integer
+        notExistDays:
+          description: 空号天数限制 0为取消
+          format: int32
+          type: integer
+        notServiceDays:
+          description: 停机天数限制 0为取消
+          format: int32
+          type: integer
+        type:
+          description: 生效范围 ALL 全网 TENANT 公司内部
+          enum:
+          - ALL
+          - TENANT
+          type: string
+        source:
+          description: 拦截组来源 SYSTEM 系统规则 CUSTOM 自定义规则
+          enum:
+          - SYSTEM
+          - CUSTOM
+          type: string
+        defaultStatus:
+          description: 是否默认规则
+          type: boolean
+      type: object
+    GetIntentLevelTagRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetIntentLevelTagRsp_allOf'
+    GetUsedIntentLevelTagListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/GetUsedIntentLevelTagListRsp_allOf'
+    IntentLevelTag:
+      properties:
+        intentLevelTagId:
+          description: 意向标签分组Id
+          format: int32
+          type: integer
+        name:
+          description: 意向标签分组名称
+          type: string
+        details:
+          items:
+            $ref: '#/components/schemas/IntentLevelTag_details'
+          type: array
+      type: object
+    GetTotalDialogFlowListReq:
+      example:
+        name: 话术复制
+        pageSize: 20
+        pageNum: 1
+      properties:
+        name:
+          description: 话术名称 模糊查询
+          example: 话术复制
+          type: string
+        pageNum:
+          default: 1
+          description: 页码 默认为1
+          example: 1
+          format: int32
+          type: integer
+        pageSize:
+          default: 20
+          description: 每页条数 默认为20
+          example: 20
+          format: int32
+          type: integer
+      type: object
+    TotalDialogFlowListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/TotalDialogFlowListRsp_allOf'
+    DialogFlowPage:
+      properties:
+        number:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalElements:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+        content:
+          items:
+            $ref: '#/components/schemas/DialogFlow'
+          type: array
+      type: object
+    CopyDialogFlowReq:
+      example:
+        vadGateMute: 1
+        dialogFlowTemplateId: 0
+        intentLevelTagId: 6
+        name: name
+        description: description
+        branchLevel:
+        - branchLevel
+        - branchLevel
+        maxSentenceSilence: 5
+        enableAskService: true
+      properties:
+        dialogFlowTemplateId:
+          description: 被复制话术ID
+          format: int64
+          type: integer
+        name:
+          description: 话术复制
+          format: 话术名称
+          type: string
+        description:
+          description: 测试话术
+          type: string
+        intentLevelTagId:
+          description: 意向规则分组id
+          format: int64
+          type: integer
+        vadGateMute:
+          description: 打断灵敏度 [1-9]
+          format: int32
+          type: integer
+        maxSentenceSilence:
+          description: 反应灵敏度 [1-9]
+          format: int32
+          type: integer
+        enableAskService:
+          description: 是否启用问法
+          type: boolean
+        branchLevel:
+          items:
+            type: string
+          type: array
+      required:
+      - dialogFlowTemplateId
+      - name
+      type: object
+    CopyDialogFlowRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/CopyDialogFlowRsp_allOf'
+    Industry:
+      properties:
+        name:
+          type: string
+        desc:
+          type: string
+      type: object
+    DialogContentInfo:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/DialogContentInfo_allOf'
+    DialogFlowConfig:
+      description: 个性化配置
+      properties:
+        dialogFlowUserSayConfigs:
+          description: 客户单句时长触发
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+        dialogFlowDeclineConfigs:
+          description: 触发多次拒绝
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+        dialogFlowBusinessQAConfigs:
+          description: 触发多个业务问题
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+      type: object
+    DialogFlowStep:
+      properties:
+        title:
+          type: string
+        dialogFlowNodes:
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+      type: object
+    DialogFlowNode:
+      description: 流程节点
+      properties:
+        label:
+          type: string
+        title:
+          type: string
+        context:
+          type: string
+        prefixRecordUrl:
+          type: string
+      type: object
+    RobotKnowledge:
+      description: 问答知识
+      properties:
+        title:
+          type: string
+        answers:
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+      type: object
+    KnowledgeStep:
+      description: 问答知识流程
+      properties:
+        title:
+          type: string
+        dialogFlowNodes:
+          description: 问答知识流程节点
+          items:
+            $ref: '#/components/schemas/DialogFlowNode'
+          type: array
+      type: object
+    DialogFlowCallJobRelatedInfo:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/DialogFlowCallJobRelatedInfo_allOf'
+    DialogFlowList:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/DialogFlowList_allOf'
+    DialogFlow:
+      properties:
+        dialogFlowId:
+          description: 机器人话术id
+          format: int32
+          type: integer
+        name:
+          description: 机器人话术名称
+          type: string
+        industry:
+          $ref: '#/components/schemas/Industry'
+        subIndustry:
+          $ref: '#/components/schemas/Industry'
+        intentLevelTagId:
+          description: 意向标签分组id
+          format: int64
+          type: integer
+        status:
+          description: 话术状态(DRAFT 草稿 PENDING_APPROVAL 等待审核 REJECTED 拒绝 APPROVED 审核通过)
+          type: string
+        createTime:
+          description: 创建时间
+          type: string
+        type:
+          type: string
+        description:
+          type: string
+        intentLevelTagName:
+          type: string
+      type: object
+    StaffGroupListRsp:
+      allOf:
+      - $ref: '#/components/schemas/APIResponse'
+      - $ref: '#/components/schemas/StaffGroupListRsp_allOf'
     GetTenantRsp:
       allOf:
       - $ref: '#/components/schemas/APIResponse'
@@ -217,7 +1945,7 @@ components:
       description: Phone
       properties:
         tenantPhoneNumberId:
-          description: 电话id
+          description: 用户线路ID（代表绑给用户的虚拟线路）
           format: int64
           type: integer
         phoneNumber:
@@ -227,14 +1955,25 @@ components:
           description: 电话号码名称
           type: string
         phoneType:
-          description: (MOBILE, "手机"),(LANDLINE, "固话"),(UNFIXED_CALL, "无主叫固话")
+          description: 电话类型 (MOBILE，"手机"),(LANDLINE，"固话"),(UNFIXED_CALL，"无主叫"),(VOIP_DEVICE，"网关设备"),
+            (CS_SEAT，"人工外呼"),(MESSAGE，"短信"),(CALL_POLICY_GROUP，"外呼策略组")
+          enum:
+          - MOBILE
+          - LANDLINE
+          - UNFIXED_CALL
+          - VOIP_DEVICE
+          - CS_SEAT
+          - MESSAGE
+          - CALL_POLICY_GROUP
           type: string
         localBillRate:
           description: 本地话费（单位：厘）
-          type: string
+          format: int32
+          type: integer
         otherBillRate:
           description: 外地话费（单位：厘）
-          type: string
+          format: int32
+          type: integer
         callOutIndustry:
           description: (FINANCE, "金融"),(OTHER, "其他")
           type: string
@@ -249,7 +1988,72 @@ components:
           type: string
         deadArea:
           description: 无法外呼地区
+          items:
+            $ref: '#/components/schemas/Phone_deadArea'
+          type: array
+        tenantId:
+          format: int64
+          type: integer
+        concurrency:
+          format: int32
+          type: integer
+        phoneNumberId:
+          description: 线路ID（代表实际的线路）
+          format: int32
+          type: integer
+        accountFare:
+          description: 账户余额，单位（厘）
+          format: int32
+          type: integer
+        enabledStatus:
+          description: 是否启用，1为启用，0为禁用
+          format: int32
+          type: integer
+        monthlyBillRate:
+          description: 呼入月租费率，单位（厘）
+          format: int32
+          type: integer
+        callInLocalBillRate:
+          description: 呼入本地通话费用，单位（厘）
+          format: int32
+          type: integer
+        callInOtherBillRate:
+          description: 呼入外地通话费用，单位（厘）
+          format: int32
+          type: integer
+        callInBillMode:
+          description: 呼入计费方式 (MONTHLY，"按月租计费"),(CHAT_TIME，"按通话时长(分钟)计费")
+          enum:
+          - MONTHLY
+          - CHAT_TIME
           type: string
+        lastHeartBeatTime:
+          description: 最后外呼时间
+          type: string
+        concurrenceLimit:
+          description: 并发数限制
+          format: int32
+          type: integer
+        remark:
+          description: 备注
+          type: string
+        sipAccount:
+          description: SIP账号
+          type: string
+        ownerName:
+          description: 归属公司名称
+          type: string
+        locationDisplayType:
+          description: 线路归属地显示方式（DEFAULT，"默认显示配置归属地"）,（RANDOM，"全国随机显示"）,（NO_DISPLAY，"不显示"）
+          enum:
+          - DEFAULT
+          - RANDOM
+          - NO_DISPLAY
+          type: string
+        ownerTenantId:
+          description: 归属公司ID
+          format: int64
+          type: integer
       title: Phone
       type: object
     UpdatePhoneInfoByTenantPhoneNumberIdReq:
@@ -258,11 +2062,17 @@ components:
         deadArea:
           city: city
           prov: prov
+        tenantPhoneNumberId: 1010
         areaCode: http://www.baidu.com
         province: 浙江
         city: 杭州
         callOutIndustry: FINANCE
       properties:
+        tenantPhoneNumberId:
+          description: 用户线路ID（代表绑给用户的虚拟线路）
+          example: 1010
+          format: int64
+          type: integer
         areaCode:
           description: 线路归属地
           example: http://www.baidu.com
@@ -305,6 +2115,7 @@ components:
     APIResponse:
       description: ""
       example:
+        errorStackTrace: errorStackTrace
         code: 0
         requestId: requestId
         resultMsg: resultMsg
@@ -319,8 +2130,398 @@ components:
         resultMsg:
           description: 响应说明
           type: string
+        errorStackTrace:
+          type: string
       title: APIResponse
       type: object
+    inline_response_200:
+      example:
+        APIResponse:
+          errorStackTrace: errorStackTrace
+          code: 0
+          requestId: requestId
+          resultMsg: resultMsg
+        data: data
+      properties:
+        APIResponse:
+          $ref: '#/components/schemas/APIResponse'
+        data:
+          description: 导出文档的下载链接
+          type: string
+    inline_object:
+      properties:
+        robotCallJobId:
+          description: 任务Id
+          example: 1
+          format: int64
+          type: integer
+      required:
+      - robotCallJobId
+      type: object
+    inline_object_1:
+      properties:
+        robotCallJobId:
+          description: 任务Id
+          format: int64
+          type: integer
+      type: object
+    inline_object_2:
+      properties:
+        robotCallJobId:
+          description: 删除任务
+          format: int64
+          type: integer
+      type: object
+    inline_object_3:
+      properties:
+        robotCallJobId:
+          description: 任务Id
+          format: int64
+          type: integer
+        robotCount:
+          description: 坐席数量
+          format: int32
+          type: integer
+      type: object
+    inline_object_4:
+      properties:
+        operation:
+          description: 操作类型，必填 PAUSE:暂停 START:开始
+          enum:
+          - PAUSE
+          - START
+          type: string
+        robotCallJobIdSet:
+          description: 任务id集合
+          items:
+            type: string
+          type: array
+        statusSet:
+          description: 任务状态，NOT_STARTED(0, "未开始"),IN_PROCESS(1, "进行中")，COMPLETED(2,
+            "已完成"),RUNNABLE(3, "可运行"),USER_PAUSE(4, "用户暂停"),SYSTEM_SUSPENDED(5, "系统暂停")，TERMINATE(6,
+            "已终止"),IN_QUEUE(7, "排队中"),SYSTEM_HANG_UP(10, "系统挂起"),WAITING_FOR_REDIAL(11,
+            "等待重呼"),ACCOUNT_DISABLE(12, "账户禁用"),MAINTAIN(13, "系统维护");
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETED
+          - RUNNABLE
+          - USER_PAUSE
+          - SYSTEM_SUSPENDED
+          - TERMINATE
+          - IN_QUEUE
+          - SYSTEM_HANG_UP
+          - WAITING_FOR_REDIAL
+          - ACCOUNT_DISABLE
+          - MAINTAIN
+          type: string
+        name:
+          description: 任务名称
+          type: string
+        beginCreateDate:
+          description: 开始任务创建日期
+          type: string
+        endCreateDate:
+          description: 结束任务创建日期
+          type: string
+      required:
+      - operation
+      type: object
+    inline_object_5:
+      properties:
+        robotCallJobId:
+          items:
+            type: string
+          type: array
+      type: object
+    GetJobDetailRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/Job'
+    GetJobsRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobsPage'
+    JobsPage_content:
+      properties:
+        robotCallJobId:
+          format: int64
+          type: integer
+        name:
+          type: string
+        status:
+          type: string
+        completedTask:
+          format: int64
+          type: integer
+        taskCallTotal:
+          format: int64
+          type: integer
+        createTime:
+          type: string
+        createdByUserName:
+          type: string
+        organizationName:
+          type: string
+    GetJobStatsInfoListRsp_allOf_data:
+      properties:
+        taskTotal:
+          format: int64
+          type: integer
+        taskCompleted:
+          format: int64
+          type: integer
+    GetJobStatsInfoListRsp_allOf:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/GetJobStatsInfoListRsp_allOf_data'
+          type: array
+    ExecuteJobsRsp_allOf:
+      properties:
+        robotCallJobId:
+          description: 任务id
+          format: int64
+          type: integer
+        robotCallJobName:
+          description: 任务名
+          type: string
+        msg:
+          description: 信息
+          type: string
+    CheckAllRsp_allOf:
+      properties:
+        robotCallJobId:
+          description: 任务id
+          type: string
+        robotCallJobName:
+          description: 任务名
+          type: string
+        createTime:
+          description: 创建时间
+          type: string
+        createUserName:
+          description: 任务创建人
+          type: string
+        status:
+          description: 任务状态，NOT_STARTED(0, "未开始"),IN_PROCESS(1, "进行中")，COMPLETED(2,
+            "已完成"),RUNNABLE(3, "可运行"),USER_PAUSE(4, "用户暂停"),SYSTEM_SUSPENDED(5, "系统暂停")，TERMINATE(6,
+            "已终止"),IN_QUEUE(7, "排队中"),SYSTEM_HANG_UP(10, "系统挂起"),WAITING_FOR_REDIAL(11,
+            "等待重呼"),ACCOUNT_DISABLE(12, "账户禁用"),MAINTAIN(13, "系统维护");
+          enum:
+          - NOT_STARTED
+          - IN_PROCESS
+          - COMPLETED
+          - RUNNABLE
+          - USER_PAUSE
+          - SYSTEM_SUSPENDED
+          - TERMINATE
+          - IN_QUEUE
+          - SYSTEM_HANG_UP
+          - WAITING_FOR_REDIAL
+          - ACCOUNT_DISABLE
+          - MAINTAIN
+          type: string
+        hangUpType:
+          description: 系统挂起类型 ACCOUNT_DEBT(0, "账户欠费", "使用的线路账户已欠费"),NO_ROBOT_AVAILABLE(1,
+            "没有可用坐席", "当前没有可用坐席"),PHONE_UNBIND(2, "线路已解绑", "使用的线路已解绑"),LINE_BREAKDOWN(3,
+            "线路故障", "使用的线路状态均为故障"),AVAILABLE_ROBOT_NOT_ENOUGH(4,"有效坐席数不足","有效坐席数不足，请检查有效AI坐席数量！");
+          enum:
+          - ACCOUNT_DEBT
+          - NO_ROBOT_AVAILABLE
+          - PHONE_UNBIND
+          - LINE_BREAKDOWN
+          - AVAILABLE_ROBOT_NOT_ENOUGH
+          type: string
+        hangUpReason:
+          description: 系统挂起原因
+          type: string
+        completedTask:
+          description: 已完成的任务总量
+          format: int64
+          type: integer
+        totalTask:
+          description: 任务总数
+          format: int64
+          type: integer
+        answeredTask:
+          description: 接通电话总量
+          format: int64
+          type: integer
+        ablevelCustomer:
+          description: AB类客户数量
+          format: int64
+          type: integer
+        msg:
+          description: 信息
+          format: string
+          type: string
+    JobUpdateRsp_allOf_data:
+      properties:
+        robotCallJobId:
+          format: int64
+          type: integer
+    JobUpdateRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/JobUpdateRsp_allOf_data'
+    RobotCallJob_inactiveTimeList:
+      example:
+        startTime: startTime
+        endTime: endTime
+      properties:
+        startTime:
+          type: string
+        endTime:
+          type: string
+    GetPolicyGroupListRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/PolicyGroup'
+    GetIdAndNamePairListRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/PolicyGroupIdAndNamePair'
+    InterceptListRsp_allOf:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/CallIntercept'
+          type: array
+    GetIntentLevelTagRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/IntentLevelTag'
+    GetUsedIntentLevelTagListRsp_allOf:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/IntentLevelTag'
+          type: array
+    IntentLevelTag_details:
+      properties:
+        code:
+          format: int32
+          type: integer
+        name:
+          type: string
+    TotalDialogFlowListRsp_allOf:
+      properties:
+        data:
+          $ref: '#/components/schemas/DialogFlowPage'
+    CopyDialogFlowRsp_allOf:
+      properties:
+        dialogFlowId:
+          description: 话术id
+          format: int64
+          type: integer
+        name:
+          description: 话术名称
+          type: string
+        intentLevelTagId:
+          description: 意向分组id
+          format: int64
+          type: integer
+        status:
+          description: 话术状态(DRAFT 草稿 PENDING_APPROVAL 等待审核 REJECTED 拒绝 APPROVED 审核通过)
+          type: string
+        createTime:
+          description: 话术创建时间
+          type: string
+        industry:
+          $ref: '#/components/schemas/Industry'
+        subIndustry:
+          $ref: '#/components/schemas/Industry'
+        description:
+          description: 描述
+          type: string
+        type:
+          description: 话术类型(NORMAL 客户定制 TEMPLATE 模板)
+          enum:
+          - NORMAL
+          - TEMPLATE
+          type: string
+    DialogContentInfo_allOf:
+      properties:
+        dialogFlowId:
+          description: 话术id
+          format: int64
+          type: integer
+        name:
+          description: 话术名称
+          type: string
+        totalRecordCount:
+          description: 需要录音条数
+          format: int32
+          type: integer
+        completeRecordCount:
+          description: 已录音条数
+          format: int32
+          type: integer
+        label:
+          description: 文本标签(上传录音时已次标签为文件名)
+          type: string
+        title:
+          description: 流程、节点、问答知识等名称
+          type: string
+        context:
+          description: 录音文本内容
+          type: string
+        prefixRecordUrl:
+          description: 录音文件，未录音时此字段为空
+          type: string
+        dialogFlowSteps:
+          items:
+            $ref: '#/components/schemas/DialogFlowStep'
+          type: array
+        dialogFlowConfig:
+          items:
+            $ref: '#/components/schemas/DialogFlowConfig'
+          type: array
+        robotKnowledges:
+          items:
+            $ref: '#/components/schemas/RobotKnowledge'
+          type: array
+        knowledgeSteps:
+          items:
+            $ref: '#/components/schemas/KnowledgeStep'
+          type: array
+    DialogFlowCallJobRelatedInfo_allOf:
+      properties:
+        placeholderExist:
+          description: 是否有变量名
+          type: boolean
+        jumpToHumanServiceExist:
+          description: 是否转人工标识
+          type: boolean
+        humanInterventionExist:
+          description: 是否有人工介入标识
+          type: boolean
+    DialogFlowList_allOf:
+      properties:
+        data:
+          items:
+            $ref: '#/components/schemas/DialogFlow'
+          type: array
+    StaffGroupListRsp_allOf:
+      properties:
+        number:
+          format: int32
+          type: integer
+        pageSize:
+          format: int32
+          type: integer
+        totalElements:
+          format: int32
+          type: integer
+        pages:
+          format: int32
+          type: integer
+        csStaffGroupId:
+          format: int64
+          type: integer
+        groupName:
+          type: string
     GetTenantRsp_allOf:
       properties:
         tenantName:
@@ -349,6 +2550,12 @@ components:
           items:
             $ref: '#/components/schemas/Phone'
           type: array
+    Phone_deadArea:
+      properties:
+        city:
+          type: string
+        prov:
+          type: string
     UpdatePhoneInfoByTenantPhoneNumberIdReq_deadArea:
       description: 线路黑名单地址
       example:
