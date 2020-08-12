@@ -21,7 +21,7 @@ type conf struct {
 
 func getClient() *tanyibot.APIClient {
 	var conf conf
-	yamlFile, err := ioutil.ReadFile("conf.yaml")
+	yamlFile, err := ioutil.ReadFile("../../conf.yaml")
 	if err != nil {
 		log.Printf("yamlFile.Get err #%v ", err)
 	}
@@ -154,7 +154,7 @@ func TestCreateJob(t *testing.T) {
 			CustomerPersons: []tanyibot.CustomerPerson{
 				tanyibot.CustomerPerson{
 					Name: "x先生",
-					PhoneNumber: "18311112222",
+					PhoneNumber: "13827478724",
 				},
 			},
 		}
