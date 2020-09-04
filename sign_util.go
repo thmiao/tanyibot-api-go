@@ -1,4 +1,4 @@
-package tanyibot-api-go
+package tanyibot
 
 import(
 	// "crypto/hmac"

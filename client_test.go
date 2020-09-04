@@ -154,7 +154,7 @@ func TestCreateJob(t *testing.T) {
 			CustomerPersons: []tanyibot.CustomerPerson{
 				tanyibot.CustomerPerson{
 					Name: "x先生",
-					PhoneNumber: "13827478724",
+					PhoneNumber: "18665311790",
 				},
 			},
 		}
