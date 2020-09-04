@@ -1,4 +1,4 @@
-# Go API client for tanyibot
+# Go API client for tanyibot-api-go
 
 tanyibot api
 
@@ -23,7 +23,7 @@ go get github.com/antihax/optional
 Put the package under your project folder and add the following in import:
 
 ```golang
-import "./tanyibot"
+import "./tanyibot-api-go"
 ```
 
 ## Documentation for API Endpoints
