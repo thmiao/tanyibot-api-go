@@ -11,10 +11,10 @@ package tanyibot
 
 import (
 	_context "context"
+	"github.com/antihax/optional"
 	_ioutil "io/ioutil"
 	_nethttp "net/http"
 	_neturl "net/url"
-	"github.com/antihax/optional"
 )
 
 // Linger please
@@ -28,8 +28,9 @@ type JobApiService service
 /*
 Create 通过此接口可以创建新的任务
 创建任务,支持使用多个无主叫固话,只需设置总并发数,由系统自动分配每个线路的并发。
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return JobCreateRsp
 */
 func (a *JobApiService) Create(ctx _context.Context, body Job) (JobCreateRsp, *_nethttp.Response, error) {
@@ -103,10 +104,83 @@ func (a *JobApiService) Create(ctx _context.Context, body Job) (JobCreateRsp, *_
 	return localVarReturnValue, localVarHTTPResponse, nil
 }
 
+// ImportCustomerAsync 异步导入客户方法，单次上限10000。同步方法一知侧已不再对接
+func (a *JobApiService) ImportCustomerAsync(ctx _context.Context, body ImportCustomerAsyncReq) (ApiResponse, *_nethttp.Response, error) {
+	var (
+		localVarHTTPMethod   = _nethttp.MethodPost
+		localVarPostBody     interface{}
+		localVarFormFileName string
+		localVarFileName     string
+		localVarFileBytes    []byte
+		localVarReturnValue  ApiResponse
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/job/importCustomerAsync"
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := _neturl.Values{}
+	localVarFormParams := _neturl.Values{}
+
+	// to determine the Content-Type header
+	localVarHTTPContentTypes := []string{"application/json"}
+
+	// set Content-Type header
+	localVarHTTPContentType := selectHeaderContentType(localVarHTTPContentTypes)
+	if localVarHTTPContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHTTPContentType
+	}
+
+	// to determine the Accept header
+	localVarHTTPHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHTTPHeaderAccept := selectHeaderAccept(localVarHTTPHeaderAccepts)
+	if localVarHTTPHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHTTPHeaderAccept
+	}
+	// body params
+	localVarPostBody = &body
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHTTPMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFormFileName, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHTTPResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHTTPResponse == nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	localVarBody, err := _ioutil.ReadAll(localVarHTTPResponse.Body)
+	localVarHTTPResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHTTPResponse, err
+	}
+
+	if localVarHTTPResponse.StatusCode >= 300 {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: localVarHTTPResponse.Status,
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	err = a.client.decode(&localVarReturnValue, localVarBody, localVarHTTPResponse.Header.Get("Content-Type"))
+	if err != nil {
+		newErr := GenericOpenAPIError{
+			body:  localVarBody,
+			error: err.Error(),
+		}
+		return localVarReturnValue, localVarHTTPResponse, newErr
+	}
+
+	return localVarReturnValue, localVarHTTPResponse, nil
+}
+
 /*
 ImportCustomer Method for ImportCustomer
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return ApiResponse
 */
 func (a *JobApiService) ImportCustomer(ctx _context.Context, body ImportCustomerReq) (ApiResponse, *_nethttp.Response, error) {
@@ -182,8 +256,9 @@ func (a *JobApiService) ImportCustomer(ctx _context.Context, body ImportCustomer
 
 /*
 JobCheckAllPost Method for JobCheckAllPost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return CheckAllRsp
 */
 func (a *JobApiService) JobCheckAllPost(ctx _context.Context, body InlineObject4) (CheckAllRsp, *_nethttp.Response, error) {
@@ -259,14 +334,15 @@ func (a *JobApiService) JobCheckAllPost(ctx _context.Context, body InlineObject4
 
 // JobDeletePostOpts Optional parameters for the method 'JobDeletePost'
 type JobDeletePostOpts struct {
-    Body optional.Interface
+	Body optional.Interface
 }
 
 /*
 JobDeletePost Method for JobDeletePost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *JobDeletePostOpts - Optional Parameters:
- * @param "Body" (optional.Interface of InlineObject2) - 
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param optional nil or *JobDeletePostOpts - Optional Parameters:
+  - @param "Body" (optional.Interface of InlineObject2) -
+
 @return ApiResponse
 */
 func (a *JobApiService) JobDeletePost(ctx _context.Context, localVarOptionals *JobDeletePostOpts) (ApiResponse, *_nethttp.Response, error) {
@@ -349,8 +425,9 @@ func (a *JobApiService) JobDeletePost(ctx _context.Context, localVarOptionals *J
 
 /*
 JobExecuteJobsPost Method for JobExecuteJobsPost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return ExecuteJobsRsp
 */
 func (a *JobApiService) JobExecuteJobsPost(ctx _context.Context, body ExecuteJobsReq) (ExecuteJobsRsp, *_nethttp.Response, error) {
@@ -426,8 +503,9 @@ func (a *JobApiService) JobExecuteJobsPost(ctx _context.Context, body ExecuteJob
 
 /*
 JobGetJobDetailGet Method for JobGetJobDetailGet
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param robotCallJobId 任务Id
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param robotCallJobId 任务Id
+
 @return GetJobDetailRsp
 */
 func (a *JobApiService) JobGetJobDetailGet(ctx _context.Context, robotCallJobId int64) (GetJobDetailRsp, *_nethttp.Response, error) {
@@ -502,8 +580,9 @@ func (a *JobApiService) JobGetJobDetailGet(ctx _context.Context, robotCallJobId 
 
 /*
 JobGetJobStatsInfoListPost Method for JobGetJobStatsInfoListPost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return GetJobStatsInfoListRsp
 */
 func (a *JobApiService) JobGetJobStatsInfoListPost(ctx _context.Context, body InlineObject5) (GetJobStatsInfoListRsp, *_nethttp.Response, error) {
@@ -579,21 +658,22 @@ func (a *JobApiService) JobGetJobStatsInfoListPost(ctx _context.Context, body In
 
 // JobGetJobsGetOpts Optional parameters for the method 'JobGetJobsGet'
 type JobGetJobsGetOpts struct {
-    Name optional.String
-    Status optional.String
-    PageNum optional.Int32
-    PageSize optional.Int32
+	Name     optional.String
+	Status   optional.String
+	PageNum  optional.Int32
+	PageSize optional.Int32
 }
 
 /*
 JobGetJobsGet 获取任务列表接口
 通过此接口可以获取指定公司的任务列表
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *JobGetJobsGetOpts - Optional Parameters:
- * @param "Name" (optional.String) -  任务名称
- * @param "Status" (optional.String) -  任务状态,(NOT_STARTED, \"未开始\"),(IN_PROCESS, \"进行中\"),(COMPLETED, \"已完成\"),(RUNNABLE, \"可运行\"),(USER_PAUSE, \"用户暂停\"),(SYSTEM_SUSPENDED, \"系统暂停\"),(TERMINATE, \"已终止\"),(IN_QUEUE, \"排队中\"),(SYSTEM_HANG_UP,\"系统挂起\"),(WAITING_FOR_REDIAL,\"等待重呼\"),(ACCOUNT_DISABLE,\"账户禁用\"),(MAINTAIN,\"系统维护\");
- * @param "PageNum" (optional.Int32) -  第几页,默认1
- * @param "PageSize" (optional.Int32) -  页面大小,选填,默认20,最大值100
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param optional nil or *JobGetJobsGetOpts - Optional Parameters:
+  - @param "Name" (optional.String) -  任务名称
+  - @param "Status" (optional.String) -  任务状态,(NOT_STARTED, \"未开始\"),(IN_PROCESS, \"进行中\"),(COMPLETED, \"已完成\"),(RUNNABLE, \"可运行\"),(USER_PAUSE, \"用户暂停\"),(SYSTEM_SUSPENDED, \"系统暂停\"),(TERMINATE, \"已终止\"),(IN_QUEUE, \"排队中\"),(SYSTEM_HANG_UP,\"系统挂起\"),(WAITING_FOR_REDIAL,\"等待重呼\"),(ACCOUNT_DISABLE,\"账户禁用\"),(MAINTAIN,\"系统维护\");
+  - @param "PageNum" (optional.Int32) -  第几页,默认1
+  - @param "PageSize" (optional.Int32) -  页面大小,选填,默认20,最大值100
+
 @return GetJobsRsp
 */
 func (a *JobApiService) JobGetJobsGet(ctx _context.Context, localVarOptionals *JobGetJobsGetOpts) (GetJobsRsp, *_nethttp.Response, error) {
@@ -679,15 +759,16 @@ func (a *JobApiService) JobGetJobsGet(ctx _context.Context, localVarOptionals *J
 
 // JobModifyPatchOpts Optional parameters for the method 'JobModifyPatch'
 type JobModifyPatchOpts struct {
-    Body optional.Interface
+	Body optional.Interface
 }
 
 /*
 JobModifyPatch 修改任务接口
 通过此接口可以修改任务
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *JobModifyPatchOpts - Optional Parameters:
- * @param "Body" (optional.Interface of Job) - 
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param optional nil or *JobModifyPatchOpts - Optional Parameters:
+  - @param "Body" (optional.Interface of Job) -
+
 @return JobUpdateRsp
 */
 func (a *JobApiService) JobModifyPatch(ctx _context.Context, localVarOptionals *JobModifyPatchOpts) (JobUpdateRsp, *_nethttp.Response, error) {
@@ -770,14 +851,15 @@ func (a *JobApiService) JobModifyPatch(ctx _context.Context, localVarOptionals *
 
 // JobPausePostOpts Optional parameters for the method 'JobPausePost'
 type JobPausePostOpts struct {
-    Body optional.Interface
+	Body optional.Interface
 }
 
 /*
 JobPausePost Method for JobPausePost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *JobPausePostOpts - Optional Parameters:
- * @param "Body" (optional.Interface of InlineObject1) - 
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param optional nil or *JobPausePostOpts - Optional Parameters:
+  - @param "Body" (optional.Interface of InlineObject1) -
+
 @return ApiResponse
 */
 func (a *JobApiService) JobPausePost(ctx _context.Context, localVarOptionals *JobPausePostOpts) (ApiResponse, *_nethttp.Response, error) {
@@ -860,8 +942,9 @@ func (a *JobApiService) JobPausePost(ctx _context.Context, localVarOptionals *Jo
 
 /*
 JobReAddCustomerToJobPost Method for JobReAddCustomerToJobPost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return ApiResponse
 */
 func (a *JobApiService) JobReAddCustomerToJobPost(ctx _context.Context, body ReAddCustomerToJobReq) (ApiResponse, *_nethttp.Response, error) {
@@ -937,8 +1020,9 @@ func (a *JobApiService) JobReAddCustomerToJobPost(ctx _context.Context, body ReA
 
 /*
 JobUpdateAiCountPost Method for JobUpdateAiCountPost
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return ApiResponse
 */
 func (a *JobApiService) JobUpdateAiCountPost(ctx _context.Context, body InlineObject3) (ApiResponse, *_nethttp.Response, error) {
@@ -1014,8 +1098,9 @@ func (a *JobApiService) JobUpdateAiCountPost(ctx _context.Context, body InlineOb
 
 /*
 Start Method for Start
- * @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body
+  - @param ctx _context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
+  - @param body
+
 @return ApiResponse
 */
 func (a *JobApiService) Start(ctx _context.Context, body InlineObject) (ApiResponse, *_nethttp.Response, error) {
