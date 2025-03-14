@@ -1,4 +1,4 @@
-module github.com/xopenapi/tanyibot-api-go
+module github.com/thmiao/tanyibot-api-go
 
 go 1.14
 
